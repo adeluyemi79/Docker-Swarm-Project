@@ -1,0 +1,50 @@
+Source code
+cd docker
+  mkdir app
+  cd app
+  vi Dockerfile
+  docker build -t my-redis-image .
+   docker run --name my-redis-container -p 6379:6379 -d my-redis-image
+  docker rm f7a0fb0a299508b33a5e7006f7b13ec6ed17ed9096d8681a9bb343d46fbc8bbd
+   docker rm a22bd1abda61c36aa9894c0711808c4db96319197c4d9b75a3b719eae40fa0da
+   docker run --name my-redis-container -p 6379:6379 -d my-redis-image
+  docker run --name my-redis-container -p 6385:6379 -d my-redis-image
+  docker rm b58fa0d568452e1956acac91860c2a2d60b2a1ebf436aa261a5481f3fe2d313c
+  docker run --name my-redis-container -p 6385:6379 -d my-redis-image
+   docker ps
+ docker ps my-redis-image
+  docker logs my-redis-image
+  docker logs my-redis-container
+  docker push adeluyemi79/my-redis-image
+  docker push adeluyemi79/my-redis-image:latest
+ docker images
+ docker login
+ docker push adeluyemi79/my-redis-image
+ docker tag my-redis-image adeluyemi79/my-redis-image
+ docker push adeluyemi79/my-redis-image
+ docker network ls
+ docker swarm leave -f
+ docker swarm init
+ docker service create --name my-redis-service --network ingress -p 6385:6379 redis:alpine
+  docker service create --name my-redis-service --network overlay -p 6385:6379 redis:alpine
+  docker network create --driver overlay my-overlay-network
+  docker service create --name my-redis-service --network my-overlay-network -p 6385:6379 redis:alpine
+ docker service ps my-redis-service
+ docker service inspect ag6hhdxnat0f0bae0bl9dqcr9
+  docker service inspect ag6hhdxnat0f0bae0bl9dqcr9
+ docker node inspect -pretty woker-node-1.eample.com
+ docker node inspect --pretty woker-node-1.eample.com
+ docker node inspect --pretty woker-node-1.example.com
+  docker node ls
+   docker node inspect --pretty worker-node-1.example.com
+  docker node ls
+  docker node inspect --pretty master.example.com
+   redis-cli -h 172.31.31.209 -p 6385
+ docker service inspect ag6hhdxnat0f0bae0bl9dqcr9
+  redis-cli -h 172.31.30.239 -p 6385
+  docker service ps my-redis-service
+  redis-cli -h 172.31.31.209 -p 6385 info
+  redis-cli -h 172.31.31.209 -p 6385 client list
+ docker node inspect --pretty worker-node-2.example.com
+  redis-cli -h 172.31.18.41 -p 6385
+
