@@ -1,0 +1,92 @@
+
+Step 1: Created a Dockerfile
+       Created a docker directory mkdir docker
+          Cd docker
+          Created an app directory from the docker directory
+          mkdir app
+         cd app
+    Created a file named Dockerfile with the following content:
+# Use the official Redis Alpine image as the base image
+FROM redis:alpine
+
+# Expose the default Redis port
+EXPOSE 6379
+Step 4: Build the Docker Image
+1.	navigated to the app directory containing the Dockerfile.
+2.	Ran the following command to build the Docker image:
+Docker build -t my-redis-image .
+Step 5: Run the Redis container
+Docker run -d --name my-redis container -p 6385:6379 my-redis-image
+# runs a detached (background) container named my-redis-container based on the my-redis-image image, mapping the host port 6385 to the container port 6379. 
+
+Step 5: Tagged and Pushed the Image to Docker Hub
+      docker tag my-redis-image adeluyemi79/my-redis-image
+        docker login 
+         docker push adeluyemi79/my-redis-image
+Step 6: Created a Swarm Cluster
+1.	Initialized a Swarm on simplilearn machine using the following command:
+         docker swarm init 
+2.	Copied the join command on the master and ran it on worker node1 and node2 to complete the swarm cluster set up.
+Step 7: Created an overlay network for the redis service to use and then Deployed the Redis Service on the Swarm Cluster
+labsuser@master:~/docker/app$ docker network create --driver overlay my-overlay-network
+e43j8gyrby3okt5aqxgfcpl4r
+
+
+labsuser@master:~/docker/app$ docker service create --name my-redis-service --network my-overlay-network -p 6385:6379 redis:alpine
+ag6hhdxnat0f0bae0bl9dqcr9
+# creates a service named my-redis-service, uses the overlay network my-overlay-network, and maps port 6385 on the host to port 6379 in the service.
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service converged 
+labsuser@master:~/docker/app$
+
+docker service inspect ag6hhdxnat0f0bae0bl9dqcr9
+
+docker node inspect --pretty worker-node-1.example.com
+Step 8: Verified the deployment to ensure that redis-service is running
+
+labsuser@master:~/docker/app$ docker service ps my-redis-service
+ID                  NAME                     IMAGE               NODE                        DESIRED STATE       CURRENT STATE             ERROR                              PORTS
+8f6viipj1yix        my-redis-service.1       redis:alpine        worker-node-1.example.com   Running             Running 29 minutes ago                                       
+zb23m7owzf5b         \_ my-redis-service.1   redis:alpine        master.example.com          Shutdown            Rejected 30 minutes ago   "Pool overlaps with other one …"   
+2nuq5ijxmt2m         \_ my-redis-service.1   redis:alpine        master.example.com          Shutdown            Rejected 30 minutes ago   "Pool overlaps with other one …"   
+w8pwexo0udwb         \_ my-redis-service.1   redis:alpine        master.example.com          Shutdown            Rejected 30 minutes ago   "Pool overlaps with other one …"   
+8mxk2t5xvio4         \_ my-redis-service.1   redis:alpine        master.example.com          Shutdown            Rejected 30 minutes ago   "Pool overlaps with other one …"   
+
+
+
+Tested the connection on swarm worker-node-1: This ensures I can successfully connect to the redis service
+Install redis tools on swarm manager
+Sudo apt install redis-tools
+labsuser@master:~/docker/app$ redis-cli -h 172.31.31.209 -p 6385
+172.31.31.209:6385> ping
+PONG
+172.31.31.209:6385> set testkey "Hello, Redis!"
+OK
+172.31.31.209:6385> get testkey
+"Hello, Redis!"
+172.31.31.209:6385>
+
+Check Server Information
+labsuser@master:~/docker/app$ redis-cli -h 172.31.31.209 -p 6385 info
+
+Check server connection information
+
+labsuser@master:~/docker/app$ redis-cli -h 172.31.31.209 -p 6385 client list
+id=6 addr=10.0.0.3:47788 laddr=10.0.0.11:6379 fd=8 name= age=0 idle=0 flags=N db=0 sub=0 psub=0 ssub=0 multi=-1 qbuf=26 qbuf-free=20448 argv-mem=10 multi-mem=0 rbs=16384 rbp=16384 obl=0 oll=0 omem=0 tot-mem=37786 events=r cmd=client|list user=default redir=-1 resp=2 lib-name= lib-ver=
+labsuser@master:~/docker/app$
+
+
+Verified the connection on swarm node2
+
+docker node inspect --pretty worker-node-2.example.com
+
+labsuser@master:~/docker/app$ redis-cli -h 172.31.18.41 -p 6385
+172.31.18.41:6385> ping
+PONG
+172.31.18.41:6385> get testkey
+"Hello, Redis!"
+172.31.18.41:6385>
+
+I heve successfully created a redis docker based image, pushed the image to docker-hub, deployed the image on a swarm cluster , ensure that the redis service is running and successfully connected to the redis server on the Docker swarm.
+
