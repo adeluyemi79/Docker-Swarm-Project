@@ -15,3 +15,4 @@ Following requirements should be met:
 ●	Document the step-by-step process involved in completing this task
 ![Screenshot 2023-12-21 095755](https://github.com/adeluyemi79/Docker-Swarm-Project/assets/144259400/ef938a39-c14c-4115-a805-ce8453e547d5)
 ![Screenshot 2023-12-21 102242](https://github.com/adeluyemi79/Docker-Swarm-Project/assets/144259400/6092cb3d-0d4b-40ea-b3d3-d6fd5610454e
+![Screenshot 2023-12-21 112329](https://github.com/adeluyemi79/Docker-Swarm-Project/assets/144259400/14db6be9-2b88-4485-854e-d9fd2473dccc)
